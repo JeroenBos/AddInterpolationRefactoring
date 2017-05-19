@@ -47,7 +47,7 @@ namespace AddInterpolationRefactoring
 
             // if context is in a LiteralExpressionSyntax
             var node = root.FindNode(context.Span);
-            if (node.IsKind(SyntaxKind.StringLiteralExpression))
+            var node = root.FindNode(context.Span, getInnermostNodeForTie: true); // inner most node is useful e.g. when the string literal is an argument in a method call
             {
                 return (LiteralExpressionSyntax)node;
             }
