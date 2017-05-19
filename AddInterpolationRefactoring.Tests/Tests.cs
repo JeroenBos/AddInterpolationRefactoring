@@ -170,5 +170,22 @@ namespace AddInterpolationRefactoring.Tests
 
             TestCodeRefactoring(markupCode, expected);
         }
+        [TestMethod]
+        public void InArgument()
+        {
+            const string markupCode =
+                @"public static void M(string s) 
+            {
+                M(""TEST[||]"");
+            }";
+
+            const string expected =
+                @"public static void M(string s) 
+            {
+                M($""TEST"");
+            }";
+
+            TestCodeRefactoring(markupCode, expected);
+        }
     }
 }
