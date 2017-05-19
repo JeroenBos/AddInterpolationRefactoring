@@ -1,25 +1,19 @@
-
-using System.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
-using System.Diagnostics;
-using System.Collections;
 using System;
-using System.Collections.Generic;
+using System.Composition;
+using System.Threading;
+using System.Threading.Tasks;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace AddInterpolationRefactoring
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(AddInterpolationRefactoringCodeRefactoringProvider)), Shared]
-    internal class AddInterpolationRefactoringCodeRefactoringProvider : CodeRefactoringProvider
+    public class AddInterpolationRefactoringCodeRefactoringProvider : CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
@@ -46,9 +40,10 @@ namespace AddInterpolationRefactoring
 
 
             // if context is in a LiteralExpressionSyntax
-            var node = root.FindNode(context.Span);
             var node = root.FindNode(context.Span, getInnermostNodeForTie: true); // inner most node is useful e.g. when the string literal is an argument in a method call
+            if (node.IsKind(SyntaxKind.StringLiteralExpression))
             {
+                //(node as ArgumentSyntax).Expression
                 return (LiteralExpressionSyntax)node;
             }
 
