@@ -1,191 +1,209 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RoslynNUnitLight;
+using System;
 
 namespace AddInterpolationRefactoring.Tests
 {
-    [TestClass]
-    public class CodeRefactoringTester : CodeRefactoringTestFixture
-    {
-        protected override string LanguageName => LanguageNames.CSharp;
+	[TestClass]
+	public class CodeRefactoringTester : CodeRefactoringTestFixture
+	{
+		protected override string LanguageName => LanguageNames.CSharp;
 
-        protected override CodeRefactoringProvider CreateProvider()
-        {
-            return new AddInterpolationRefactoringCodeRefactoringProvider();
-        }
+		protected override CodeRefactoringProvider CreateProvider()
+		{
+			return new AddInterpolationRefactoringCodeRefactoringProvider();
+		}
 
-        [TestMethod]
-        public void EmptyStringTest()
-        {
-            const string markupCode =
-            @"public static void M() 
+		[TestMethod]
+		public void EmptyStringTest()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = ""[||]"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $"""";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void EmptyVerbatimStringTest()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void EmptyVerbatimStringTest()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = @""[||]"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $@"""";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void StringTest()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void StringTest()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = ""[|TEST|]"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $""TEST"";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void VerbatimStringTest()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void VerbatimStringTest()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = @""[|TEST|]"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $@""TEST"";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void AtOpeningDoubleQuote()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void AtOpeningDoubleQuote()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = [||]""TEST"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $""TEST"";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void AtClosingDoubleQuote()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void AtClosingDoubleQuote()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = ""TEST""[||];
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $""TEST"";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void AtVerbatimCharacter()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void AtVerbatimCharacter()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = [||]@""TEST"";
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $@""TEST"";
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void InOpenEndedString()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void InOpenEndedString()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = ""TEST[||];
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $""TEST;
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void InOpenEndedVerbatimString()
-        {
-            const string markupCode =
-            @"public static void M() 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void InOpenEndedVerbatimString()
+		{
+			const string markupCode =
+			@"public static void M() 
             {
                 var x = @""TEST[||];
             }";
 
-            const string expected =
-            @"public static void M() 
+			const string expected =
+			@"public static void M() 
             {
                 var x = $@""TEST;
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-        [TestMethod]
-        public void InArgument()
-        {
-            const string markupCode =
-                @"public static void M(string s) 
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void InArgument()
+		{
+			const string markupCode =
+				@"public static void M(string s) 
             {
                 M(""TEST[||]"");
             }";
 
-            const string expected =
-                @"public static void M(string s) 
+			const string expected =
+				@"public static void M(string s) 
             {
                 M($""TEST"");
             }";
 
-            TestCodeRefactoring(markupCode, expected);
-        }
-    }
+			TestCodeRefactoring(markupCode, expected);
+		}
+		[TestMethod]
+		public void WithNewline()
+		{
+			const string newline = "\\nT";
+			const string markupCode =
+			@"public static void M() 
+            {
+                var x = """ + newline + @"[||]"";
+            }";
+
+			const string expected =
+			@"public static void M() 
+            {
+                var x = $""" + newline + @""";
+            }";
+
+			TestCodeRefactoring(markupCode, expected);
+		}
+	}
 }
