@@ -205,5 +205,23 @@ namespace AddInterpolationRefactoring.Tests
 
 			TestCodeRefactoring(markupCode, expected);
 		}
+		[TestMethod]
+		public void DoubleQuoteInVerbatimLiteral()
+		{
+			const string doubleQuote = "\"\"";
+			const string markupCode =
+			@"public static void M() 
+            {
+                var x = @""" + doubleQuote + @"[||]"";
+            }";
+
+			const string expected =
+			@"public static void M() 
+            {
+                var x = $@""" + doubleQuote + @""";
+            }";
+
+			TestCodeRefactoring(markupCode, expected);
+		}
 	}
 }
