@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="AddInterpolationRefactoring..2d428dc6-e01d-4006-9fb5-9256c76c2ed4" Version="1.0" Language="en-US" Publisher="Jeroen"/>
+        <Identity Id="AddInterpolationRefactoring..2d428dc6-e01d-4006-9fb5-9256c76c2ed4" Version="1.1" Language="en-US" Publisher="Jeroen"/>
         <DisplayName>AddInterpolationRefactoring</DisplayName>
         <Description xml:space="preserve">A Roslyn code refactoring that prepends the current string literal with $.</Description>
     </Metadata>
