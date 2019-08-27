@@ -28,7 +28,7 @@ namespace AddInterpolationRefactoring
 					context.RegisterRefactoring(action);
 				}
 			}
-			catch (Exception e)
+			catch
 			{
 
 			}
@@ -70,7 +70,7 @@ namespace AddInterpolationRefactoring
 				syntaxRoot = syntaxRoot.ReplaceNode(literalExpr, interpolatedExpression);
 				return document.Project.Solution.WithDocumentSyntaxRoot(document.Id, syntaxRoot);
 			}
-			catch (Exception e)
+			catch
 			{
 				return null;
 			}
